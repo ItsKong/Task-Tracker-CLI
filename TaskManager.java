@@ -14,16 +14,12 @@ public class TaskManager {
         setTasks(this.fileEditor.checkIfFileExit());
     }
 
-    public static TaskManager createInstance(String[] arguments) {
+    public static TaskManager getInstance(String[] arguments) {
         if (instance == null) {
             return new TaskManager(arguments);
         } else {
             return instance;
         }
-    }
-
-    public static TaskManager getInstance() {
-        return instance;
     }
 
     private int getValidID() {
@@ -35,15 +31,60 @@ public class TaskManager {
         return i;
     }
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
-    }
-
     public void addTask() {
         int newID = getValidID();
         Task newTask = new Task(newID, arguments[1]);
         tasks.put(newID, newTask);
         fileEditor.writeJSON(tasks);
+    }
+
+    public void updateTask() {
+        if (arguments.length <= 1) {
+            System.err.println("Please enter id");
+            return;
+        }
+        if (!isValidID(arguments[1])) return;
+        try {
+            tasks.get(Integer.parseInt(arguments[1])).setDescription(arguments[2]).setUpdateAt();
+            fileEditor.writeJSON(tasks);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    public void markStatus() {
+        if (!(arguments.length > 1)) {
+            System.err.println("Please enter ID.");
+            return;
+        }
+        if (!isValidID(arguments[1])) return;
+        switch (arguments[0]) {
+            case "mark-in-progress":
+                setTaskStatusbyID(Status.INPROG.getStatus());
+                break;
+            case "mark-done":
+                setTaskStatusbyID(Status.DONE.getStatus());
+                break;
+            default:
+                System.err.println("Please enter correct command.");
+                break;
+        }
+    }
+
+    public void deleteTask() {
+        if (arguments.length <= 1) {
+            System.err.println("Please enter id");
+            return;
+        }
+        if (!isValidID(arguments[1])) return;
+        try {
+            tasks.remove(Integer.parseInt(arguments[1]));
+            fileEditor.writeJSON(tasks);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
     public void list() {
@@ -66,6 +107,26 @@ public class TaskManager {
             for(Map.Entry<Integer,Task> entry : tasks.entrySet()) {
                 System.err.println(entry.getValue().getTaskJSON());
             }
+        }
+    }
+
+    private boolean isValidID(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter valid ID.");
+            return false;
+        }
+    }
+
+    private void setTaskStatusbyID(String status) {
+        try {
+            this.tasks.get(Integer.parseInt(arguments[1])).setStatus(status).setUpdateAt();
+            fileEditor.writeJSON(tasks);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
         }
     }
 

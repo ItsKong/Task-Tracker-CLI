@@ -27,10 +27,8 @@ public class FileEditor {
                                             .replace("\n", "")
                                             .split("},");
                 for (String taskStr : taskList) {
-                    // System.err.println(taskStr);
                     Task loadTask = Task.loadFromJSON(taskStr);
                     tasks.put(loadTask.getID(), loadTask);
-                    // System.err.println(loadTask.getTaskJSON());
                 }
                 return tasks; 
             } catch (Exception e) {

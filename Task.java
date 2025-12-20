@@ -12,7 +12,7 @@ public class Task {
       this.id = id;
       this.description = description;
       this.status = Status.TODO.getStatus();
-      this.createdAt = LocalDate.now() + " " + LocalTime.now().toString().substring(0, 9);
+      this.createdAt = getCurrentDateTime();
       this.updatedAt = this.createdAt;
    }
 
@@ -40,11 +40,30 @@ public class Task {
       return task;
    }
 
+   private String getCurrentDateTime() {
+      return LocalDate.now() + " " + LocalTime.now().toString().substring(0, 9);
+   }
+
    public int getID() {
       return this.id;
    }
 
    public String getStatus() {
       return this.status;
+   }
+
+   public Task setStatus(String status) {
+      this.status = status;
+      return this;
+   }
+
+   public Task setDescription(String des) {
+      this.description = des;
+      return this;
+   }
+
+   public Task setUpdateAt() {
+      this.updatedAt = getCurrentDateTime();
+      return this;
    }
 }
