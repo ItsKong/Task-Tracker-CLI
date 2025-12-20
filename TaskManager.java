@@ -90,7 +90,7 @@ public class TaskManager {
         try {
             tasks.remove(Integer.parseInt(arguments[1]));
             if(fileEditor.writeJSON(tasks)) {
-                System.out.printf("Task delete successfully (ID: %s) \n" ,arguments[1]);
+                System.out.printf("Task deleted successfully (ID: %s) \n" ,arguments[1]);
             } else {
                 System.out.println("Deleted Task failed.");
             }
@@ -139,7 +139,7 @@ public class TaskManager {
         try {
             this.tasks.get(Integer.parseInt(arguments[1])).setStatus(status).setUpdateAt();
             if(fileEditor.writeJSON(tasks)) {
-                System.err.printf("Task added successfully (ID: %s%n)" ,arguments[1]);
+                System.err.printf("Task marked successfully (ID: %s%n)" ,arguments[1]);
             } else {
                 System.out.println("Marked Task failed.");
             };
