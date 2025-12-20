@@ -35,7 +35,12 @@ public class TaskManager {
         int newID = getValidID();
         Task newTask = new Task(newID, arguments[1]);
         tasks.put(newID, newTask);
-        fileEditor.writeJSON(tasks);
+        if(fileEditor.writeJSON(tasks)) {
+            System.out.printf("Task added successfully (ID: %d) \n" ,newID);
+        } else {
+            System.out.println("Added Task failed.");
+        }
+
     }
 
     public void updateTask() {
@@ -46,7 +51,11 @@ public class TaskManager {
         if (!isValidID(arguments[1])) return;
         try {
             tasks.get(Integer.parseInt(arguments[1])).setDescription(arguments[2]).setUpdateAt();
-            fileEditor.writeJSON(tasks);
+            if(fileEditor.writeJSON(tasks)) {
+                System.out.printf("Task updated successfully (ID: %s) \n" ,arguments[1]);
+            } else {
+                System.out.println("Updated Task failed.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -67,7 +76,7 @@ public class TaskManager {
                 setTaskStatusbyID(Status.DONE.getStatus());
                 break;
             default:
-                System.err.println("Please enter correct command.");
+                System.err.println("Please enter correct command. \n");
                 break;
         }
     }
@@ -80,7 +89,11 @@ public class TaskManager {
         if (!isValidID(arguments[1])) return;
         try {
             tasks.remove(Integer.parseInt(arguments[1]));
-            fileEditor.writeJSON(tasks);
+            if(fileEditor.writeJSON(tasks)) {
+                System.out.printf("Task delete successfully (ID: %s) \n" ,arguments[1]);
+            } else {
+                System.out.println("Deleted Task failed.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -88,6 +101,7 @@ public class TaskManager {
     }
 
     public void list() {
+        System.out.println("========== Task Lists ==========");
         if(arguments.length > 1) {
             switch (arguments[1]) {
                 case "done":
@@ -105,9 +119,10 @@ public class TaskManager {
             }
         } else {
             for(Map.Entry<Integer,Task> entry : tasks.entrySet()) {
-                System.err.println(entry.getValue().getTaskJSON());
+                System.err.println(entry.getValue().getGoodlookingTask());
             }
         }
+        System.out.println("================================ \n");
     }
 
     private boolean isValidID(String str) {
@@ -123,7 +138,11 @@ public class TaskManager {
     private void setTaskStatusbyID(String status) {
         try {
             this.tasks.get(Integer.parseInt(arguments[1])).setStatus(status).setUpdateAt();
-            fileEditor.writeJSON(tasks);
+            if(fileEditor.writeJSON(tasks)) {
+                System.err.printf("Task added successfully (ID: %s%n)" ,arguments[1]);
+            } else {
+                System.out.println("Marked Task failed.");
+            };
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -133,7 +152,7 @@ public class TaskManager {
     private void getTaskByStatus(String status) {
         for(Map.Entry<Integer,Task> entry : tasks.entrySet()) {
             if(entry.getValue().getStatus().equals(status)) {
-                System.err.println(entry.getValue().getTaskJSON());
+                System.err.println(entry.getValue().getGoodlookingTask());
             }
         } 
     }

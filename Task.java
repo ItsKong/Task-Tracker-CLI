@@ -21,6 +21,11 @@ public class Task {
                 "\", \"createdAt\":\"" + createdAt + "\", \"updatedAt\":\"" + updatedAt + "\"}";
    }
 
+   public String getGoodlookingTask() {
+      return "ID: " + id + ", Description: " + description.strip() + ", Status: " + status.toString() +
+               ", Create At: " + createdAt + ", Update At: " + updatedAt;
+   }
+
    public static Task loadFromJSON(String taskStr) {
       String[] splitField = taskStr.replace("{", "")
                               .replace("\"", "")

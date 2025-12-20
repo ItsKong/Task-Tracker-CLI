@@ -40,7 +40,7 @@ public class FileEditor {
         }
     }
 
-    public void writeJSON(HashMap<Integer, Task> tasks) {
+    public boolean writeJSON(HashMap<Integer, Task> tasks) {
         StringBuilder sb = new StringBuilder();
         Iterator<Map.Entry<Integer, Task>> iterator = tasks.entrySet().iterator();
         sb.append("[\n");
@@ -58,8 +58,10 @@ public class FileEditor {
         String jsonContent = sb.toString();
         try {
             Files.writeString(FILE_PATH, jsonContent);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 }
