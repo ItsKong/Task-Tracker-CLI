@@ -10,7 +10,8 @@ public class FileEditor {
 
     public static FileEditor getInstance() {
         if (instance == null) {
-            return new FileEditor();
+            instance = new FileEditor();
+            return instance;
         } else {
             return instance;
         }

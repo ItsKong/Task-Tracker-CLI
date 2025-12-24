@@ -16,7 +16,8 @@ public class TaskManager {
 
     public static TaskManager getInstance(String[] arguments) {
         if (instance == null) {
-            return new TaskManager(arguments);
+            instance = new TaskManager(arguments);
+            return instance;
         } else {
             return instance;
         }
@@ -38,7 +39,7 @@ public class TaskManager {
         if(fileEditor.writeJSON(tasks)) {
             System.out.printf("Task added successfully (ID: %d) \n" ,newID);
         } else {
-            System.out.println("Added Task failed.");
+            System.err.println("Added Task failed.");
         }
 
     }
@@ -54,7 +55,7 @@ public class TaskManager {
             if(fileEditor.writeJSON(tasks)) {
                 System.out.printf("Task updated successfully (ID: %s) \n" ,arguments[1]);
             } else {
-                System.out.println("Updated Task failed.");
+                System.err.println("Updated Task failed.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,7 +77,7 @@ public class TaskManager {
                 setTaskStatusbyID(Status.DONE.getStatus());
                 break;
             default:
-                System.err.println("Please enter correct command. \n");
+                System.out.println("Please enter correct command. \n");
                 break;
         }
     }
@@ -92,7 +93,7 @@ public class TaskManager {
             if(fileEditor.writeJSON(tasks)) {
                 System.out.printf("Task deleted successfully (ID: %s) \n" ,arguments[1]);
             } else {
-                System.out.println("Deleted Task failed.");
+                System.err.println("Deleted Task failed.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,7 +120,7 @@ public class TaskManager {
             }
         } else {
             for(Map.Entry<Integer,Task> entry : tasks.entrySet()) {
-                System.err.println(entry.getValue().getGoodlookingTask());
+                System.out.println(entry.getValue().getGoodlookingTask());
             }
         }
         System.out.println("================================ \n");
@@ -130,7 +131,7 @@ public class TaskManager {
             Integer.parseInt(str);
             return true;
         } catch (NumberFormatException e) {
-            System.out.println("Please enter valid ID.");
+            System.err.println("Please enter valid ID.");
             return false;
         }
     }
@@ -139,9 +140,9 @@ public class TaskManager {
         try {
             this.tasks.get(Integer.parseInt(arguments[1])).setStatus(status).setUpdateAt();
             if(fileEditor.writeJSON(tasks)) {
-                System.err.printf("Task marked successfully (ID: %s%n)" ,arguments[1]);
+                System.out.printf("Task marked successfully (ID: %s%n)" ,arguments[1]);
             } else {
-                System.out.println("Marked Task failed.");
+                System.err.println("Marked Task failed.");
             };
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,7 +153,7 @@ public class TaskManager {
     private void getTaskByStatus(String status) {
         for(Map.Entry<Integer,Task> entry : tasks.entrySet()) {
             if(entry.getValue().getStatus().equals(status)) {
-                System.err.println(entry.getValue().getGoodlookingTask());
+                System.out.println(entry.getValue().getGoodlookingTask());
             }
         } 
     }
